@@ -1,0 +1,6 @@
+tabix: /zfssz4/B2C_RD_P2/PMO/fangzhonghai/software/anaconda3/envs/lumpy/bin/tabix
+tn_bed: /zfssz4/B2C_RD_P2/PMO/fangzhonghai/pub_database/NA12878/vcf/NA12878_TN_2M.bed
+snp_het: /zfssz4/B2C_RD_P2/PMO/fangzhonghai/pub_database/NA12878/vcf/NA12878.snv.het.txt
+snp_hom: /zfssz4/B2C_RD_P2/PMO/fangzhonghai/pub_database/NA12878/vcf/NA12878.snv.hom.txt
+indel_het: /zfssz4/B2C_RD_P2/PMO/fangzhonghai/pub_database/NA12878/vcf/NA12878.indel.het.txt
+indel_hom: /zfssz4/B2C_RD_P2/PMO/fangzhonghai/pub_database/NA12878/vcf/NA12878.indel.hom.txt
