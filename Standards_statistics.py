@@ -104,11 +104,16 @@ def gold_specificity(tn_bed, fp_vcf):
     tn_bed_df.columns = ['#Chr', 'Start', 'Stop']
     tn_bed_df['size'] = tn_bed_df['Stop'] - tn_bed_df['Start'] + 1
     tn_sta['TN_bed_size'] = tn_bed_df['size'].sum()
-    tmp_vcf = pd.read_csv(fp_vcf, header=None, sep='\t')
-    tn_sta['var_in_TN_bed'] = tmp_vcf.shape[0]
+    try:
+        tmp_vcf = pd.read_csv(fp_vcf, header=None, sep='\t')
+        tn_sta['var_in_TN_bed'] = tmp_vcf.shape[0]
+        tn_sta['snp_var_in_TN_bed'] = tmp_vcf[(tmp_vcf[3].map(len) == 1) & (tmp_vcf[4].map(len) == 1)].shape[0]
+        tn_sta['indel_var_in_TN_bed'] = tmp_vcf[(tmp_vcf[3].map(len) != 1) | (tmp_vcf[4].map(len) != 1)].shape[0]
+    except:
+        tn_sta['var_in_TN_bed'] = 0
+        tn_sta['snp_var_in_TN_bed'] = 0
+        tn_sta['indel_var_in_TN_bed'] = 0
     tn_sta['TN'] = tn_sta['TN_bed_size'] - tn_sta['var_in_TN_bed']
-    tn_sta['snp_var_in_TN_bed'] = tmp_vcf[(tmp_vcf[3].map(len) == 1) & (tmp_vcf[4].map(len) == 1)].shape[0]
-    tn_sta['indel_var_in_TN_bed'] = tmp_vcf[(tmp_vcf[3].map(len) != 1) | (tmp_vcf[4].map(len) != 1)].shape[0]
     sta_cols = ['TN_bed_size', 'TN', 'var_in_TN_bed', 'snp_var_in_TN_bed', 'indel_var_in_TN_bed']
     sta_df = pd.DataFrame(tn_sta, columns=sta_cols, index=[0])
     return sta_df
