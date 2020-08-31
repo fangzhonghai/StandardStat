@@ -63,6 +63,15 @@ def get_vcf_dp_gt_ratio_flt(vcf_file):
     return dpgt_df
 
 
+def change_vcf_gt(vcf_dpgt):
+    vcf_dpgt.loc[vcf_dpgt['GT'] == '0|1', 'GT'] = '0/1'
+    vcf_dpgt.loc[vcf_dpgt['GT'] == '1|0', 'GT'] = '0/1'
+    vcf_dpgt.loc[vcf_dpgt['GT'] == '1|1', 'GT'] = '1/1'
+    vcf_dpgt.loc[vcf_dpgt['GT'] == '1|2', 'GT'] = '1/2'
+    vcf_dpgt.loc[vcf_dpgt['GT'] == '2|1', 'GT'] = '1/2'
+    return vcf_dpgt
+
+
 def gold_sensitivity(snp_het, snp_hom, indel_het, indel_hom, goldid, sample_df, sampleid):
     sta = {}
     cols = ["#CHROM", "POS", "REF", "ALT", "GT"]
@@ -74,6 +83,7 @@ def gold_sensitivity(snp_het, snp_hom, indel_het, indel_hom, goldid, sample_df, 
     sta['gold_snp_hom'] = gold_snp_hom.shape[0]
     sta['gold_indel_het'] = gold_indel_het.shape[0]
     sta['gold_indel_hom'] = gold_indel_hom.shape[0]
+    sample_df = change_vcf_gt(sample_df)
     sample_df_snp_het = sample_df[(sample_df['Type'] == 'snp') & (sample_df['GT'] != '1/1')].copy()
     sample_df_snp_hom = sample_df[(sample_df['Type'] == 'snp') & (sample_df['GT'] == '1/1')].copy()
     sample_df_indel_het = sample_df[(sample_df['Type'] == 'indel') & (sample_df['GT'] != '1/1')].copy()
